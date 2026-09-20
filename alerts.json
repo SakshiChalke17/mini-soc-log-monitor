@@ -1,0 +1,27 @@
+[
+    {
+        "type": "BRUTE_FORCE",
+        "severity": "HIGH",
+        "ip": "192.168.1.50",
+        "attempts": 5,
+        "timestamp": "2026-09-12 09:12:20",
+        "reason": "Multiple failed login attempts detected within the configured time window."
+    },
+    {
+        "type": "SUCCESS_AFTER_FAILURES",
+        "severity": "HIGH",
+        "ip": "192.168.1.50",
+        "user": "admin",
+        "failed_attempts": 5,
+        "timestamp": "2026-09-12 09:12:25",
+        "reason": "Successful login occurred after repeated authentication failures."
+    },
+    {
+        "type": "UNKNOWN_USER_LOGIN",
+        "severity": "MEDIUM",
+        "ip": "192.168.1.60",
+        "user": "unknownuser",
+        "timestamp": "2026-09-12 11:50:00",
+        "reason": "Successful login detected for a user not present in the known-user list."
+    }
+]
