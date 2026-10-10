@@ -1,4 +1,4 @@
-
+###Mini SOC LOG Monitor
 
 A Python-based security log monitoring tool that analyses authentication logs, detects suspicious login activity, and generates structured security alerts.
 
