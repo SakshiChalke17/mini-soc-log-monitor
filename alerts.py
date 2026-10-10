@@ -35,3 +35,6 @@ def print_alerts(alerts):
                 f"Time: {alert['timestamp']} | "
                 f"Reason: {alert['reason']}"
             )
+
+        else:
+            print(f"[UNKNOWN] Unrecognised alert type: {alert.get('type', 'N/A')}")

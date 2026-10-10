@@ -31,24 +31,24 @@ def detect_brute_force(logs, threshold=5, time_window=60):
 
     return alerts
 
+
 def detect_success_after_failures(logs, threshold=3, time_window=300):
     alerts = []
-
     failed_attempts = {}
 
     for log in logs:
         ip = log["ip"]
+        timestamp = log["timestamp"]
 
         if log["event"] == "FAILED_LOGIN":
-            failed_attempts.setdefault(ip, [])
-            failed_attempts[ip].append(log)
+            failed_attempts.setdefault(ip, []).append(log)
 
         elif log["event"] == "SUCCESS_LOGIN":
             recent_failures = [
                 failed
                 for failed in failed_attempts.get(ip, [])
-                if log["timestamp"] - failed["timestamp"]
-                <= timedelta(seconds=time_window)
+                if 0 <= (timestamp - failed["timestamp"]).total_seconds()
+                <= time_window
             ]
 
             if len(recent_failures) >= threshold:
@@ -58,11 +58,18 @@ def detect_success_after_failures(logs, threshold=3, time_window=300):
                     "ip": ip,
                     "user": log["user"],
                     "failed_attempts": len(recent_failures),
-                    "timestamp": log["timestamp"],
-                    "reason": "Successful login occurred after repeated authentication failures."
+                    "timestamp": timestamp,
+                    "reason": (
+                        "Successful login occurred after repeated "
+                        "authentication failures."
+                    )
                 })
 
+            # Clear the tracked failures after a successful login.
+            failed_attempts[ip] = []
+
     return alerts
+
 
 def detect_unknown_user(logs, known_users):
     alerts = []
